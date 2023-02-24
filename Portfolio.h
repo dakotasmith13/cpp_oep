@@ -34,6 +34,8 @@ public:
 
 	// update portfolio w/ new stocks
 	void update_portfolio(vector<Stock>&);
+	std::vector<Stock> sell_stock(std::string stock_to_sell) const;
+
 
 private:
 	// Fields

@@ -16,14 +16,116 @@ struct Preset_Stock
     string dividend;
 };
 
+void display_menu();
+// input validation
+int get_int_from_user();
+
+int main()
+{
+    string name = "";
+	char carry_on = 'y';
+    Stock s, new_stock;
+	vector<Stock> stocks_collection;
+    Portfolio p("", stocks_collection);
+
+
+    // depending on choice, call function
+    while (carry_on == 'y')
+    {
+        display_menu();
+        const int choice = get_int_from_user();
+        // buy stock
+        if (choice == 1)
+        {
+            new_stock = s.buy_stock();
+            // add stock to vector of stocks
+            stocks_collection.push_back(new_stock);
+            // update portfolio with new stock
+            p.update_portfolio(stocks_collection);
+            cout << "Successfully purchased " << new_stock.get_ticker() << "!" << endl;
+            cout << "\n" << endl;
+        }
+        // sell stock
+        else if (choice == 2)
+        {
+            // check if portfolio empty
+            if (p.get_stock_collection().empty())
+            {
+                cout << "You do not currently own any stock." << endl;
+                cout << "\n" << endl;
+            }
+            else
+            {
+                // get symbol of stock to be sold
+                cout << "Please enter the symbol of the stock you would like to sell: ";
+                const string stock_to_sell = Stock::get_stock_from_user("stock");
+                // get new vector of stocks with updated stock values
+                stocks_collection = p.sell_stock(stock_to_sell);
+                // update portfolio with updated vector
+                p.update_portfolio(stocks_collection);
+				cout << "\n" << endl;
+            }
+        }
+        else if (choice == 3)
+        {
+            // name to be displayed for portfolio
+            cout << "Your name?: ";
+            // validation
+            name = s.get_stock_from_user("name");
+
+            // check if empty
+            if (p.get_stock_collection().empty())
+            {
+                cout << name << ", your portfolio is currently empty" << endl;
+                cout << "\n" << endl;
+            }
+            else
+            {
+                // display portfolio
+                p.display_portfolio(name);
+                cout << "\n" << endl;
+                cout << "Would you like to return to the menu? (y/n): ";
+                carry_on = s.get_confirmation_from_user();
+            }
+        }
+        else if (choice == 4)
+        {
+            // create stocks to be displayed
+            Preset_Stock tesla = { "Tesla", "TSLA", 189.98,"N" };
+            Preset_Stock apple = { "Apple", "AAPL", 154.50,"Y" };
+            Preset_Stock amazon = {"Amazon", "AMZN", 103.39,"N" };
+            Preset_Stock microsoft = { "Microsoft", "MSFT", 258.35, "Y" };
+            Preset_Stock netflix = { "Netflix", "NFLX", 365.90, "N" };
+            Preset_Stock gamestop = { "Gamestop", "GME", 22.25, "N" };
+            vector<Preset_Stock> preset_stocks = { tesla, apple, amazon, microsoft, netflix, gamestop };
+
+            // header
+            cout << "    Name   Ticker  Current Price Has Dividend" << endl;
+            // display stocks
+            for (Preset_Stock s : preset_stocks)
+            {
+                cout << setw(9) << s.stock_name << "    " << s.stock_ticker + "    " << setw(5) << s.current_price << setw(1) << "\t  " + s.dividend + "\n";
+            }
+            cout << "\n" << endl;
+            cout << "Would you like to return to the menu? (y/n): ";
+            carry_on = s.get_confirmation_from_user();
+        }
+    }
+
+    cout << "Thank you for using the VST!" << endl;
+    
+
+	return 0;
+}
+
 void display_menu()
 {
     // display options to user
     cout << "Welcome to the Virtual Stock Trader!" << endl;
-	cout << "1. Buy stock" << endl;
-	cout << "2. Sell stock" << endl;
-	cout << "3. View portfolio" << endl;
-	cout << "4. View stock prices" << endl;
+    cout << "1. Buy stock" << endl;
+    cout << "2. Sell stock" << endl;
+    cout << "3. View portfolio" << endl;
+    cout << "4. View stock prices" << endl;
 
 }
 
@@ -98,102 +200,3 @@ int get_int_from_user() {
     }
     return user_int;
 }
-
-
-int main()
-{
-    string name = "";
-	char carry_on = 'y';
-    Stock s, new_stock;
-	vector<Stock> stocks_collection;
-    Portfolio p("", stocks_collection);
-
-
-    // depending on choice, call function
-    while (carry_on == 'y')
-    {
-        display_menu();
-        const int choice = get_int_from_user();
-        // buy stock
-        if (choice == 1)
-        {
-            new_stock = s.buy_stock();
-            // add stock to vector of stocks
-            stocks_collection.push_back(new_stock);
-            // update portfolio with new stock
-            p.update_portfolio(stocks_collection);
-            cout << "Successfully purchased " << new_stock.get_ticker() << "!" << endl;
-            cout << "\n" << endl;
-        }
-        // sell stock
-        else if (choice == 2)
-        {
-            // check if portfolio empty
-            if (p.get_stock_collection().empty())
-            {
-                cout << "You do not currently own any stock." << endl;
-                cout << "\n" << endl;
-            }
-            else
-            {
-                // get new vector of stocks with updated stock values
-                stocks_collection = s.sell_stock(p.get_stock_collection());
-                // update portfolio with updated vector
-                p.update_portfolio(stocks_collection);
-				cout << "\n" << endl;
-            }
-        }
-        else if (choice == 3)
-        {
-            // name to be displayed for portfolio
-            cout << "Your name?: ";
-            // validation
-            name = s.get_stock_from_user("name");
-
-            // check if empty
-            if (p.get_stock_collection().empty())
-            {
-                cout << name << ", your portfolio is currently empty" << endl;
-                cout << "\n" << endl;
-            }
-            else
-            {
-                // display portfolio
-                p.display_portfolio(name);
-                cout << "\n" << endl;
-                cout << "Would you like to return to the menu? (y/n): ";
-                carry_on = s.get_confirmation_from_user();
-            }
-        }
-        else if (choice == 4)
-        {
-            // create stocks to be displayed
-            Preset_Stock tesla = { "Tesla", "TSLA", 189.98,"N" };
-            Preset_Stock apple = { "Apple", "AAPL", 154.50,"Y" };
-            Preset_Stock amazon = {"Amazon", "AMZN", 103.39,"N" };
-            Preset_Stock microsoft = { "Microsoft", "MSFT", 258.35, "Y" };
-            Preset_Stock netflix = { "Netflix", "NFLX", 365.90, "N" };
-            Preset_Stock gamestop = { "Gamestop", "GME", 22.25, "N" };
-            vector<Preset_Stock> preset_stocks = { tesla, apple, amazon, microsoft, netflix, gamestop };
-
-            // header
-            cout << "    Name   Ticker  Current Price Has Dividend" << endl;
-            // display stocks
-            for (Preset_Stock s : preset_stocks)
-            {
-                cout << setw(9) << s.stock_name << "    " << s.stock_ticker + "    " << setw(5) << s.current_price << setw(1) << "\t  " + s.dividend + "\n";
-            }
-            cout << "\n" << endl;
-            cout << "Would you like to return to the menu? (y/n): ";
-            carry_on = s.get_confirmation_from_user();
-        }
-    }
-
-    cout << "Thank you for using the VST!" << endl;
-    
-
-	return 0;
-}
-
-
-

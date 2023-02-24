@@ -66,7 +66,7 @@ void Stock::set_has_dividend(bool has_dividend)
 	this->has_dividend = has_dividend;
 }
 
-char Stock::get_confirmation_from_user() const {
+char Stock::get_confirmation_from_user() {
 	string user_string;
 
 	// get user input
@@ -91,7 +91,7 @@ char Stock::get_confirmation_from_user() const {
 	return user_char;
 }
 
-string Stock::get_stock_from_user(string decision) const {
+string Stock::get_stock_from_user(string decision) {
 	string user_string;
 
 	// get user input
@@ -153,7 +153,7 @@ string Stock::get_stock_from_user(string decision) const {
 	return user_string;
 }
 
-float Stock::get_float_from_user() const {
+float Stock::get_float_from_user() {
 	// to enter while loop and check that only a number is entered
 	bool valid_num = false, invalid_char = false;
 	string user_input;
@@ -260,83 +260,6 @@ Stock Stock::buy_stock() const
 	// create new stock
 	Stock new_stock(ticker, price_of_buy, quantity_to_buy, has_dividend);
 	return new_stock;
-}
-
-vector<Stock> Stock::sell_stock(vector<Stock> stocks) const
-{
-	bool find_stock = false;
-	Stock sell_stock;
-	float price_bought, quantity_owned = 0;
-	int count = 0;
-
-	// get symbol of stock to be sold
-	cout << "Please enter the symbol of the stock you would like to sell: ";
-	const string stock_to_sell = get_stock_from_user("stock");
-
-	for (Stock s: stocks)
-	{
-		count++;
-		if (s.get_ticker() == stock_to_sell)
-		{
-			find_stock = true;
-			string ticker = s.get_ticker();
-			price_bought = s.get_price();
-			quantity_owned = s.get_quantity();
-		}
-	}
-
-	// if stock is owned
-	if (find_stock)
-	{
-		// quantity to be sold
-		cout << "Please enter how many you would like to sell: ";
-		float quantity_sell = get_float_from_user();
-		while (quantity_owned < quantity_sell)
-		{
-			cout << "You only own " << quantity_owned << " shares. Please enter a valid number: ";
-			quantity_sell = get_float_from_user();
-		}
-
-		// price to be sold at
-		cout << "Please enter the current price of the stock: ";
-		const float current_price = get_float_from_user();
-
-		// confirmation of selling
-		cout << "Are you sure you would like to sell " << quantity_sell << " shares of " << stock_to_sell << " at " << current_price << " each? (y/n): ";
-		const char confirm_c = get_confirmation_from_user();
-
-
-		if (confirm_c == 'y')
-		{
-			if (quantity_owned > quantity_sell)
-			{
-				stocks.at(count - 1).set_quantity(quantity_owned - quantity_sell);
-				count = 0;
-			}
-			else
-			{
-				stocks.erase(stocks.begin() + count - 1);
-				count = 0;
-			}
-			// display profit gain/ loss
-			float profit =  (quantity_sell * current_price) - (quantity_sell * price_bought);
-			if (profit >=0 )
-			{
-				cout << "You made " << profit << "$ from this stock" << endl;
-			}
-			else
-			{
-				cout << "You lost " << profit << "$ from this stock" << endl;
-			}
-
-		}
-	}
-	else
-	{
-		cout << "You do not own this stock." << endl;
-	}
-
-	return stocks;
 }
 
 ostream& operator << (ostream& outs, const Stock& sObj)

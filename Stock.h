@@ -39,13 +39,12 @@ public:
 	void set_has_dividend(bool);
 
 	// validation
-	char get_confirmation_from_user() const;
-	std::string get_stock_from_user(std::string) const;
-	float get_float_from_user() const;
+	static char get_confirmation_from_user();
+	static std::string get_stock_from_user(std::string);
+	static float get_float_from_user();
 
 	// methods
 	Stock buy_stock() const;
-	std::vector<Stock> sell_stock(std::vector<Stock>) const;
 
 	// overloaded operator
 	// allows formatted printing of vector of stocks
