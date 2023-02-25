@@ -70,7 +70,7 @@ char Stock::get_confirmation_from_user() {
 	string user_string;
 
 	// get user input
-	getline(cin, user_string);
+	getline(cin >> ws, user_string);
 
 	// if input has more than 1 char or is empty
 	while (user_string.length() > 1 || user_string.empty() || user_string != "y" && user_string != "n")
@@ -267,10 +267,12 @@ ostream& operator << (ostream& outs, const Stock& sObj)
 	// overload for printing vector of stocks
 	outs << fixed
 		<< setprecision(2)
-		<< setw(5) << sObj.get_ticker()
-		<< setw(8) << sObj.get_quantity()
-		<< setw(14) << sObj.get_price()
-		<< setw(8) << sObj.get_has_dividend();
+		<< sObj.get_ticker() + "\t"
+		<< sObj.get_quantity() 
+		<< "\t" 
+		<< sObj.get_price() 
+		<< "\t"
+		<< sObj.get_has_dividend();
 
 	return outs;
 }

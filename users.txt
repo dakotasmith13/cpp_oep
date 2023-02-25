@@ -1,2 +1,2 @@
-USERNAME	PASSWORD	HAS_PORTFOLIO
-dsmith	d@kps!123	y
+USER	PASSWORD
+daksmith	Password123!

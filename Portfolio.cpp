@@ -1,57 +1,118 @@
 #include "Portfolio.h"
+#include "login.h"
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
 // default constructor
-Portfolio::Portfolio(string name, vector<Stock> stocks)
+Portfolio::Portfolio(vector<Stock> stocks)
 {
-	this->user_name = name;
 	this->stock_collection = stocks;
 }
 
 // getters
-string Portfolio::get_user_name() const
+vector<Stock> Portfolio::get_stock_collection(string username)
 {
-	return user_name;
-}
-vector<Stock> Portfolio::get_stock_collection() const
-{
+	ifstream user_file("../../../Portfolios/" + username + "_portfolio.txt");
+	Stock indiv_stock;
+	vector<Stock> all_stock;
+	string header, stock;
+	stringstream ss, ss2;
+	float quant, price;
+	bool dividend = false;
+
+	getline(user_file, header);
+
+	while (getline(user_file, stock))
+	{ 
+		// get first position of tab to index username
+		size_t pos = stock.find("\t");
+		string stock_name = stock.substr(0, pos);
+		if (stock_name != "")
+		{
+			// get second position of tab to index password
+			size_t pos_2 = stock.substr(pos + 1).find("\t");
+			string quantity = stock.substr(pos + 1, pos_2);
+			// get third position of tab to index if has portfolio
+			size_t pos_3 = stock.substr(pos_2 + 1).find("\t");
+			string buy_price = stock.substr(pos_3 + pos_2 + 2);
+			size_t pos_4 = stock.substr(pos_3 + pos_2 + 2).find("\t");
+			string has_dividend = stock.substr(pos_4 + pos_2 + pos_3 + 3);
+
+			// convert strings to floats
+			ss.str(quantity);
+			ss >> quant;
+			ss2.str(buy_price);
+			ss2 >> price;
+
+			// convert string to bool
+			if (has_dividend == "Yes")
+			{
+				dividend = true;
+			}
+
+			// set stock values to values from file
+			indiv_stock.set_ticker(stock_name);
+			indiv_stock.set_quantity(quant);
+			indiv_stock.set_price(price);
+			indiv_stock.set_has_dividend(dividend);
+			// add stock to vector
+			all_stock.push_back(indiv_stock);
+			ss.clear();
+			ss2.clear();
+		}
+	}
+
+	user_file.close();
+	stock_collection = all_stock;
 	return stock_collection;
 }
 
-// setters
-void Portfolio::set_user_name(string name)
-{
-	this->user_name = name;
-}
 
 // display portfolio
-void Portfolio::display_portfolio(string name) const
+void Portfolio::display_portfolio(string username)
 {
-	cout << "Portfolio of " << name << ": " << endl;
-	cout << "STOCK\t" << "QUANTITY   " << "BUY PRICE   " << "DIVIDEND" << endl;
-	for (Stock s : stock_collection)
+	// get stocks of user
+	vector<Stock> collection = get_stock_collection(username);
+
+	cout << "Portfolio of " << username << ": " << endl;
+	cout << "STOCK QUANTITY BUY PRICE DIVIDEND" << endl;
+	for (Stock s : collection)
 	{
 		cout << s << endl;
 	}
-
 }
 
 // update portfolio w/ new stocks
-void Portfolio::update_portfolio(vector<Stock>& stocks)
+void Portfolio::update_portfolio(string username, Stock s)
 {
-	this->stock_collection = stocks;
+	// get stock data
+	string name = s.get_ticker();
+	float quantity_f = s.get_quantity();
+	string quantity = to_string(quantity_f);
+	float price_f = s.get_price();
+	string price = to_string(price_f);
+	string dividend = s.get_has_dividend();
+
+	// open portfolio file for user
+	ofstream stock_data("../../../Portfolios/" + username + "_portfolio.txt", std::ios_base::app);
+	// write stock information to file
+	stock_data << "\n" << name + "\t" << quantity + "\t" << price + "\t" << dividend << endl;
+
+	stock_data.close();
 }
 
-vector<Stock> Portfolio::sell_stock(string stock_to_sell) const
+vector<Stock> Portfolio::sell_stock(string username, string stock_to_sell)
 {
 	bool find_stock = false;
 	Stock sell_stock;
 	float price_bought, quantity_owned = 0;
 	int index = 0;
-	vector<Stock> stocks = get_stock_collection();
+	vector<Stock> stocks = get_stock_collection(username);
 
 	for (int i = 0; i < stocks.size(); i++)
 	{
@@ -84,7 +145,7 @@ vector<Stock> Portfolio::sell_stock(string stock_to_sell) const
 		// confirmation of selling
 		cout << "Are you sure you would like to sell " << quantity_sell << " shares of " << stock_to_sell << " at " << current_price << " each? (y/n): ";
 		const char confirm_c = Stock::get_confirmation_from_user();
-
+		ofstream update_stocks("../../../Portfolios/" + username + "_portfolio.txt");
 
 		if (confirm_c == 'y')
 		{
@@ -108,8 +169,13 @@ vector<Stock> Portfolio::sell_stock(string stock_to_sell) const
 			{
 				cout << "You lost " << profit << "$ from this stock" << endl;
 			}
-
 		}
+		update_stocks << "STOCK\tQUANITY\tBUY PRICE\tDIVIDEND" << endl;
+		for (Stock s : stocks) 
+		{
+			update_stocks << s << endl;
+		}
+		update_stocks.close();
 	}
 	else
 	{

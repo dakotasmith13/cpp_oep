@@ -1,10 +1,10 @@
-#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include "login.h"
 #include "Stock.h"
 #include "Portfolio.h"
+#include <iomanip>
 using namespace std;
 
 // used for view stock prices option
@@ -17,7 +17,7 @@ struct Preset_Stock
     string dividend;
 };
 
-bool login();
+string login();
 void display_menu();
 // input validation
 int get_int_from_user();
@@ -25,28 +25,27 @@ int get_int_from_user();
 
 int main()
 {
-    string name = "";
+    string username;
 	char carry_on = 'y';
     Stock s, new_stock;
 	vector<Stock> stocks_collection;
-    Portfolio p("", stocks_collection);
+    Portfolio p;
     bool success_login = false;
 
-    success_login = login();
+    username = login();
 
     // depending on choice, call function
-    while (carry_on == 'y' && success_login == true)
+    while (carry_on == 'y')
     {
+        Login l(username);
         display_menu();
         const int choice = get_int_from_user();
         // buy stock
         if (choice == 1)
         {
             new_stock = s.buy_stock();
-            // add stock to vector of stocks
-            stocks_collection.push_back(new_stock);
             // update portfolio with new stock
-            p.update_portfolio(stocks_collection);
+            p.update_portfolio(username, new_stock);
             cout << "Successfully purchased " << new_stock.get_ticker() << "!" << endl;
             cout << "\n" << endl;
         }
@@ -54,7 +53,7 @@ int main()
         else if (choice == 2)
         {
             // check if portfolio empty
-            if (p.get_stock_collection().empty())
+            if (p.get_stock_collection(username).empty())
             {
                 cout << "You do not currently own any stock." << endl;
                 cout << "\n" << endl;
@@ -65,33 +64,27 @@ int main()
                 cout << "Please enter the symbol of the stock you would like to sell: ";
                 const string stock_to_sell = Stock::get_stock_from_user("stock");
                 // get new vector of stocks with updated stock values
-                stocks_collection = p.sell_stock(stock_to_sell);
+                stocks_collection = p.sell_stock(username, stock_to_sell);
                 // update portfolio with updated vector
-                p.update_portfolio(stocks_collection);
 				cout << "\n" << endl;
             }
         }
         else if (choice == 3)
         {
-            // name to be displayed for portfolio
-            cout << "Your name?: ";
-            // validation
-            name = s.get_stock_from_user("name");
-
             // check if empty
-            if (p.get_stock_collection().empty())
+            if (p.get_stock_collection(username).empty())
             {
-                cout << name << ", your portfolio is currently empty" << endl;
+                cout << username << ", your portfolio is currently empty" << endl;
                 cout << "\n" << endl;
             }
             else
             {
                 // display portfolio
-                p.display_portfolio(name);
+                p.display_portfolio(username);
                 cout << "\n" << endl;
                 cout << "Would you like to return to the menu? (y/n): ";
                 carry_on = s.get_confirmation_from_user();
-            }
+            }   
         }
         else if (choice == 4)
         {
@@ -115,6 +108,12 @@ int main()
             cout << "Would you like to return to the menu? (y/n): ";
             carry_on = s.get_confirmation_from_user();
         }
+        else if (choice == 5)
+        {
+            Login l;
+            l.logout();
+            carry_on = 'n';
+        }
     }
 
     cout << "Thank you for using the VST!" << endl;
@@ -123,7 +122,7 @@ int main()
 	return 0;
 }
 
-bool login() 
+string login() 
 {
     cout << "Welcome to the Virtual Stock Trader" << endl;
     cout << "Do you already have a login? (y/n): ";
@@ -148,14 +147,13 @@ bool login()
             cin.clear();
             cin >> pass;
         }
-        return true;
+        return user;
     }
     else
     {
         l.create_account();
         login();
     }
-    return false;
 }
 
 void display_menu()
@@ -166,6 +164,7 @@ void display_menu()
     cout << "2. Sell stock" << endl;
     cout << "3. View portfolio" << endl;
     cout << "4. View stock prices" << endl;
+    cout << "5. Logout" << endl;
 
 }
 
@@ -177,7 +176,7 @@ int get_int_from_user()
     stringstream ss, ss2;
     int count = 0, user_int;
 
-    cout << "Please choose an option (1-4): ";
+    cout << "Please choose an option (1-5): ";
 
     // while input is not valid integer
     while (!valid_num)
@@ -208,11 +207,11 @@ int get_int_from_user()
             }
         }
         // if not an int, more than one word, or an invalid character is entered
-        if (!(ss >> user_int) || count > 1 || invalid_char || user_int < 1 || user_int > 4)
+        if (!(ss >> user_int) || count > 1 || invalid_char || user_int < 1 || user_int > 5)
         {
             if (user_input.empty())
             {
-                cout << "No input. Please enter a number 1-4: ";
+                cout << "No input. Please enter a number 1-5: ";
                 // reset
                 ss.clear();
                 user_input.clear();
@@ -222,7 +221,7 @@ int get_int_from_user()
             }
             else
             {
-                cout << "Invalid input. Please enter a number 1-4: ";
+                cout << "Invalid input. Please enter a number 1-5: ";
                 // reset
                 ss.clear();
                 user_input.clear();

@@ -20,26 +20,21 @@ public:
 	Portfolio() = default;
 
 	// alt constructor: name and vector of stocks
-	Portfolio(std::string, vector<Stock>);
+	Portfolio(vector<Stock>);
 
 	// getters
-	std::string get_user_name() const;
-	vector<Stock> get_stock_collection() const;
-
-	// setters
-	void set_user_name(std::string);
+	vector<Stock> get_stock_collection(std::string username);
 
 	// display portfolio
-	void display_portfolio(std::string) const;
+	void display_portfolio(std::string username);
 
 	// update portfolio w/ new stocks
-	void update_portfolio(vector<Stock>&);
-	std::vector<Stock> sell_stock(std::string stock_to_sell) const;
+	void update_portfolio(std::string username, Stock s);
+	std::vector<Stock> sell_stock(std::string username, std::string stock_to_sell);
 
 
 private:
 	// Fields
-	std::string user_name;
 	vector<Stock> stock_collection;
 };
 

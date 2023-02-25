@@ -7,10 +7,9 @@
 using namespace std;
 
 // alt constructor
-Login::Login(string username, string password)
+Login::Login(string username)
 {
 	this->username = username;
-	this->password = password;
 }
 
 // getters
@@ -50,12 +49,8 @@ vector<vector<string>> Login::load_users_from_file()
 		// get second position of tab to index password
 		size_t pos_2 = user.substr(pos + 1).find("\t");
 		string pass = user.substr(pos + 1, pos_2);
-		// get third position of tab to index if has portfolio
-		size_t pos_3 = user.substr(pos_2 + 1).find("\t");
-		string has_portfolio = user.substr(pos_3 + pos_2 + 2);
 		indiv_user.push_back(user_name);
 		indiv_user.push_back(pass);
-		indiv_user.push_back(has_portfolio);
 		all_user.push_back(indiv_user);
 	}
 	
@@ -125,28 +120,18 @@ void Login::create_account()
 	}
 
 	// add user to file of users
-	ofstream user_file("../../../users.txt");
-	user_file << user + "\t" << pass + "\t" << "n" << endl;
+	ofstream user_file("../../../users.txt", std::ios_base::app);
+	user_file << user + "\t" << pass << endl;
 
-}
+	user_file.close();
 
-bool Login::has_portfolio(string username)
-{
-	vector<vector<string>> users = load_users_from_file();
+	// create new file with username
+	ofstream new_port("../../../Portfolios/" + user + "_portfolio.txt");
 
-	// verify if user has portfolio
-	for (int i = 0; i < users.size(); i++)
-	{
-		// find username
-		if (users[i][0] == username)
-		{
-			if (users[i][2] == "y")
-			{
-				return true;
-			}
-		}
-	}
-	return false;
+	// create header in files
+	new_port << "STOCK\tQUANTITY\tBUY PRICE\tDIVIDEND" << endl;
+
+	new_port.close();
 }
 
 // verify if password meets strength requirement

@@ -10,7 +10,7 @@ public:
 	// default constructor
 	Login() {}
 	// alt constructor
-	Login(std::string username, std::string password);
+	Login(std::string username);
 
 	// getters
 	std::string get_username() const;
@@ -26,7 +26,6 @@ public:
 	bool has_account(std::string username);
 	bool verify_password(std::string username, std::string password);
 	void create_account();
-	bool has_portfolio(std::string username);
 	// verify if password meets strength requirement
 	bool password_strength(std::string password);
 	void logout();
