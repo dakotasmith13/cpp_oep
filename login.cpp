@@ -52,6 +52,7 @@ vector<vector<string>> Login::load_users_from_file()
 		indiv_user.push_back(user_name);
 		indiv_user.push_back(pass);
 		all_user.push_back(indiv_user);
+		indiv_user.clear();
 	}
 	
 	user_file.close();

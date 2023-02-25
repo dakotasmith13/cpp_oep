@@ -86,6 +86,8 @@ char Stock::get_confirmation_from_user() {
 			getline(cin, user_string);
 		}
 	}
+	cin.clear();
+	
 	// convert string to char
 	char user_char = user_string.at(0);
 	return user_char;

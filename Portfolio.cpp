@@ -23,12 +23,11 @@ vector<Stock> Portfolio::get_stock_collection(string username)
 	string header, stock;
 	stringstream ss, ss2;
 	float quant, price;
-	bool dividend = false;
-
 	getline(user_file, header);
 
 	while (getline(user_file, stock))
 	{ 
+		bool dividend = false;
 		// get first position of tab to index username
 		size_t pos = stock.find("\t");
 		string stock_name = stock.substr(0, pos);
@@ -101,7 +100,7 @@ void Portfolio::update_portfolio(string username, Stock s)
 	// open portfolio file for user
 	ofstream stock_data("../../../Portfolios/" + username + "_portfolio.txt", std::ios_base::app);
 	// write stock information to file
-	stock_data << "\n" << name + "\t" << quantity + "\t" << price + "\t" << dividend << endl;
+	stock_data << name + "\t" << quantity + "\t" << price + "\t" << dividend << endl;
 
 	stock_data.close();
 }
