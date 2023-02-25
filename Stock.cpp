@@ -118,7 +118,7 @@ string Stock::get_stock_from_user(string decision) {
 			}
 			else
 			{
-				cout << "No input. Enter your first name: ";
+				cout << "No input. Enter your username: ";
 			}
 			count = 0;
 			getline(cin, user_string);
@@ -137,7 +137,7 @@ string Stock::get_stock_from_user(string decision) {
 			}
 			else
 			{
-				cout << "Invalid input. Enter your first name: ";
+				cout << "Invalid input. Enter your username: ";
 
 			}
 			count = 0;
