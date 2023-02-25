@@ -49,8 +49,12 @@ vector<vector<string>> Login::load_users_from_file()
 		// get second position of tab to index password
 		size_t pos_2 = user.substr(pos + 1).find("\t");
 		string pass = user.substr(pos + 1, pos_2);
+
+		// load username & password into vector
 		indiv_user.push_back(user_name);
 		indiv_user.push_back(pass);
+
+		// push user's info to larger vector
 		all_user.push_back(indiv_user);
 		indiv_user.clear();
 	}
@@ -140,17 +144,19 @@ bool Login::password_strength(string password)
 {
 	bool special_char_check = false, has_upper = false, has_lower = false, has_digit = false;
 
+	// pw less than 8 chars
 	if (password.length() < MIN_PASS_LENGTH)
 	{
 		cout << "Password must contain at least 8 characters." << endl;
 		return false;
 	}
+	// pw greater than 25 chars
 	if (password.length() > MAX_PASS_LENGTH)
 	{
 		cout << "Password must contain 25 characters or less." << endl;
 		return false;
 	}
-	
+	// ensure passwords meets all strength requirements
 	for (char c : password)
 	{
 		if (SPECIAL_CHAR.find(c))
@@ -170,7 +176,7 @@ bool Login::password_strength(string password)
 			has_digit = true;
 		}
 	}
-
+	// determine which criteria pw fails
 	if (!special_char_check || !has_upper || !has_lower || !has_digit)
 	{
 		if (!special_char_check)

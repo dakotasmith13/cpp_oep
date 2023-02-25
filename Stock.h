@@ -11,7 +11,6 @@
  * get_stock_from_user validates user input for stock name
  * get_float_from_user validates user input for a float
  * buy_stock that allows user to purchase a stock and add to their portfolio
- * sell_stock allows users to sell stock that was passed in as a param from their portfolio
  *
  */ 
 

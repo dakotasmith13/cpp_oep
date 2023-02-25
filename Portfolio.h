@@ -9,8 +9,10 @@ using std::vector;
 /*
  * This program contains:
  * Portfolio class with getters and setters
+ * get_stock_collection reads in stocks from user's file and creates and return vector
  * display_portfolio takes in the name of the user and displays their stocks
  * update_portfolio takes in a vector of stocks to update their portfolio to
+ * sell_stock finds stock in vector and updates portfolio file after selling
  */
 
 class Portfolio
