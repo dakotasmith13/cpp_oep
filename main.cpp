@@ -132,11 +132,28 @@ bool login()
     Login l;
     if (has_login == 'y')
     {
-
+        cout << "Please enter your username: ";
+        string user = Stock::get_stock_from_user("name");
+        while (!l.has_account(user))
+        {
+            cout << "User does not exist, please try again: ";
+            user = Stock::get_stock_from_user("name");
+        }
+        cout << "Please enter your password: ";
+        string pass;
+        cin >> pass;
+        while (!l.verify_password(user, pass))
+        {
+            cout << "Incorrect password, please try again: ";
+            cin.clear();
+            cin >> pass;
+        }
+        return true;
     }
     else
     {
         l.create_account();
+        login();
     }
     return false;
 }
@@ -166,7 +183,7 @@ int get_int_from_user()
     while (!valid_num)
     {
         // get user input
-        getline(cin, user_input);
+        getline(cin >> ws, user_input);
         string temp;
         // load into stringstream
         ss.str(user_input);
@@ -189,7 +206,6 @@ int get_int_from_user()
                     invalid_char = true;
                 }
             }
-
         }
         // if not an int, more than one word, or an invalid character is entered
         if (!(ss >> user_int) || count > 1 || invalid_char || user_int < 1 || user_int > 4)

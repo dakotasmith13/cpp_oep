@@ -23,11 +23,13 @@ public:
 	// load users from file
 	std::vector<std::vector<std::string>> load_users_from_file();
 	// verify if user has account
-	bool has_account(std::string username, std::string password);
+	bool has_account(std::string username);
+	bool verify_password(std::string username, std::string password);
 	void create_account();
 	bool has_portfolio(std::string username);
 	// verify if password meets strength requirement
 	bool password_strength(std::string password);
+	void logout();
 
 private:
 	const int MIN_PASS_LENGTH = 8;

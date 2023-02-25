@@ -64,7 +64,7 @@ vector<vector<string>> Login::load_users_from_file()
 }
 
 // verify if user has account
-bool Login::has_account(string username, string password = "")
+bool Login::has_account(string username)
 {
 	// get vector of users
 	vector<vector<string>> users = load_users_from_file();
@@ -80,6 +80,27 @@ bool Login::has_account(string username, string password = "")
 
 	return false;
 }
+
+bool Login::verify_password(string username, string password)
+{
+	// get vector of users
+	vector<vector<string>> users = load_users_from_file();
+
+	// determine if password correct
+	for (int i = 0; i < users.size(); i++)
+	{
+		if (users[i][0] == username)
+		{
+			if (users[i][1] == password)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 
 void Login::create_account()
 {
@@ -191,4 +212,10 @@ bool Login::password_strength(string password)
 			return true;
 		}
 	}
+}
+
+void Login::logout()
+{
+	this->username = "";
+	this->password = "";
 }
