@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include "login.h"
 #include "Stock.h"
 #include "Portfolio.h"
 using namespace std;
@@ -16,9 +17,11 @@ struct Preset_Stock
     string dividend;
 };
 
+bool login();
 void display_menu();
 // input validation
 int get_int_from_user();
+
 
 int main()
 {
@@ -27,10 +30,12 @@ int main()
     Stock s, new_stock;
 	vector<Stock> stocks_collection;
     Portfolio p("", stocks_collection);
+    bool success_login = false;
 
+    success_login = login();
 
     // depending on choice, call function
-    while (carry_on == 'y')
+    while (carry_on == 'y' && success_login == true)
     {
         display_menu();
         const int choice = get_int_from_user();
@@ -118,6 +123,24 @@ int main()
 	return 0;
 }
 
+bool login() 
+{
+    cout << "Welcome to the Virtual Stock Trader" << endl;
+    cout << "Do you already have a login? (y/n): ";
+    char has_login = Stock::get_confirmation_from_user();
+    // create Login object to call methods on
+    Login l;
+    if (has_login == 'y')
+    {
+
+    }
+    else
+    {
+        l.create_account();
+    }
+
+}
+
 void display_menu()
 {
     // display options to user
@@ -129,7 +152,8 @@ void display_menu()
 
 }
 
-int get_int_from_user() {
+int get_int_from_user() 
+{
     // to enter while loop and check that only a number is entered
     bool valid_num = false, invalid_char = false;
     string user_input;

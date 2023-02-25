@@ -3,5 +3,5 @@ project(M2OEP)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(M2OEP main.cpp Stock.h Stock.cpp Portfolio.h Portfolio.cpp)
-add_executable(test testing.cpp Stock.h Stock.cpp Portfolio.h Portfolio.cpp)
+add_executable(M2OEP main.cpp Stock.h Stock.cpp Portfolio.h Portfolio.cpp login.h login.cpp)
+add_executable(test testing.cpp Stock.h Stock.cpp Portfolio.h Portfolio.cpp login.h login.cpp)
