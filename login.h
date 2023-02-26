@@ -4,6 +4,18 @@
 #include <string>
 #include <vector>
 
+/*
+ * This program contains:
+ * Login class with getters and setters
+ * load_users_from_file creates vector with vector of strings filled with usernames and passwords of users
+ * has_account verifies that a username exists or not, returns true if exists
+ * verify_password verifies that the entered password matches the pw of that user, return true if correct
+ * create_account creates a new user and adds their username and password to file of users
+ * password_strength determines if entered password meets pw requirements (8-25 chars, one upper, one lower, one number)
+ * logout sets the username and password to "", as if the user had logged out
+ *
+ */
+
 class Login
 {
 public:
