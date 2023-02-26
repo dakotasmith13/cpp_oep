@@ -162,11 +162,11 @@ vector<Stock> Portfolio::sell_stock(string username, string stock_to_sell)
 			float profit = (quantity_sell * current_price) - (quantity_sell * price_bought);
 			if (profit >= 0)
 			{
-				cout << "You made " << profit << "$ from this stock" << endl;
+				cout << "You made $" << profit << " from this stock" << endl;
 			}
 			else
 			{
-				cout << "You lost " << profit << "$ from this stock" << endl;
+				cout << "You lost $" << profit << " from this stock" << endl;
 			}
 		}
 		update_stocks << "STOCK\tQUANITY\tBUY PRICE\tDIVIDEND" << endl;
