@@ -7,6 +7,9 @@
 #include <iomanip>
 using namespace std;
 
+// NOTE TO GRADER ABOUT FILEPATH: MAY HAVE TO CHANGE TO GET IT TO WORK, I had to create the one that I am currently using because others did not work for me
+// I am sorry for any inconvenience 
+
 // used for view stock prices option
 // will not be changed by user
 struct Preset_Stock
