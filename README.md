@@ -20,6 +20,7 @@ All code is mine.
 
 ## Grade Earned
 I believe I earned around 65 points. I believe my main program should earn about 30 points. Most of the work of this program is done in the classes, 
-but I did add the login function which increased the complexity of main a bit. TESTING X. For Has-A relationship, I would say I earned about 10 points because the Stock class was pretty heavily used in Portfolio. 
+but I did add the login function which increased the complexity of main a bit. Most of my methods are tested in the program, but I feel I was able to test them effectively in 
+my testing file (15). For Has-A relationship, I would say I earned about 10 points because the Stock class was pretty heavily used in Portfolio. 
 I'm not sure how many times my files count for being applied, I would say that I earned 5 points for each instance (at least two instances- user login file, user portfolio).
 I feel I have enough commments, everything is pretty organized, I demonstrate multiple test runs and input val, and my repo just barely spans 7 days (0 points deducted). 
