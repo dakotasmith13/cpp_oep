@@ -43,9 +43,9 @@ public:
 	void logout();
 
 private:
+	// fields
 	const int MIN_PASS_LENGTH = 8;
 	const int MAX_PASS_LENGTH = 25;
-	const std::string SPECIAL_CHAR = "!@#$%^&*?";
 	std::string username;
 	std::string password;
 };

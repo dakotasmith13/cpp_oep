@@ -2,7 +2,6 @@
 #define STOCK_H
 
 #include <string>
-#include <vector>
 
 /*
  * This program contains:

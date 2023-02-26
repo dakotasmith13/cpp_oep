@@ -169,7 +169,7 @@ bool test_Login()
 	l.set_username("dakota");
 	l.set_password("Password123!");
 	l.logout();
-	if (l.get_username() != "" && l.get_password() != "")
+	if (!l.get_username().empty() && !l.get_password().empty())
 	{
 		passed = false;
 		cout << "Failed logout test case." << endl;
