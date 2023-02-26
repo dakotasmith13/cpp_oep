@@ -40,6 +40,7 @@ int main()
         Login l(username);
         display_menu();
         const int choice = get_int_from_user();
+        cout << "\n";
         // buy stock
         if (choice == 1)
         {
@@ -47,7 +48,7 @@ int main()
             // update portfolio with new stock
             p.update_portfolio(username, new_stock);
             cout << "Successfully purchased " << new_stock.get_ticker() << "!" << endl;
-            cout << "\n" << endl;
+            cout << "\n";
         }
         // sell stock
         else if (choice == 2)
@@ -66,7 +67,7 @@ int main()
                 // get new vector of stocks with updated stock values
                 stocks_collection = p.sell_stock(username, stock_to_sell);
                 // update portfolio with updated vector
-				cout << "\n" << endl;
+				cout << "\n";
             }
         }
         else if (choice == 3)
@@ -81,7 +82,7 @@ int main()
             {
                 // display portfolio
                 p.display_portfolio(username);
-                cout << "\n" << endl;
+                cout << "\n";
                 cout << "Would you like to return to the menu? (y/n): ";
                 carry_on = s.get_confirmation_from_user();
             }   
@@ -104,7 +105,7 @@ int main()
             {
                 cout << setw(9) << s.stock_name << "    " << s.stock_ticker + "    " << setw(5) << s.current_price << setw(1) << "\t  " + s.dividend + "\n";
             }
-            cout << "\n" << endl;
+            cout << "\n";
             cout << "Would you like to return to the menu? (y/n): ";
             carry_on = s.get_confirmation_from_user();
         }
@@ -129,36 +130,35 @@ string login()
     char has_login = Stock::get_confirmation_from_user();
     // create Login object to call methods on
     Login l;
-    if (has_login == 'y')
-    {
-        cout << "Please enter your username: ";
-        string user = Stock::get_stock_from_user("name");
-        while (!l.has_account(user))
-        {
-            cout << "User does not exist, please try again: ";
-            user = Stock::get_stock_from_user("name");
-        }
-        cout << "Please enter your password: ";
-        string pass;
-        cin >> pass;
-        while (!l.verify_password(user, pass))
-        {
-            cout << "Incorrect password, please try again: ";
-            cin.clear();
-            cin >> pass;
-        }
-        return user;
-    }
-    else
+    if (has_login == 'n')
     {
         l.create_account();
-        login();
+        cout << "Account created successfully.\n" << endl;
     }
+    cout << "Welcome, please enter your username: ";
+    string user = Stock::get_stock_from_user("name");
+    while (!l.has_account(user))
+    {
+        cout << "User does not exist, please try again: ";
+        user = Stock::get_stock_from_user("name");
+    }
+    cout << "Please enter your password: ";
+    string pass;
+    cin >> pass;
+    while (!l.verify_password(user, pass))
+    {
+        cout << "Incorrect password, please try again: ";
+        cin.clear();
+        cin >> pass;
+    }
+    return user;
+
 }
 
 void display_menu()
 {
     // display options to user
+    cout << "\n";
     cout << "Welcome to the Virtual Stock Trader!" << endl;
     cout << "1. Buy stock" << endl;
     cout << "2. Sell stock" << endl;

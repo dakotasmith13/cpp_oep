@@ -114,7 +114,7 @@ void Login::create_account()
 		user = Stock::get_stock_from_user("name");
 	}
 	// get password
-	cout << "Please choose a password (Must be between 8-25 chars, contain one upper, lower, special char, and one number): ";
+	cout << "Please choose a password (Must be between 8-25 chars, contain one upper, lower, and one number): ";
 	string pass;
 	cin >> pass;
 	// verify password meets strength requirements
@@ -142,7 +142,7 @@ void Login::create_account()
 // verify if password meets strength requirement
 bool Login::password_strength(string password)
 {
-	bool special_char_check = false, has_upper = false, has_lower = false, has_digit = false;
+	bool has_upper = false, has_lower = false, has_digit = false;
 
 	// pw less than 8 chars
 	if (password.length() < MIN_PASS_LENGTH)
@@ -159,10 +159,6 @@ bool Login::password_strength(string password)
 	// ensure passwords meets all strength requirements
 	for (char c : password)
 	{
-		if (SPECIAL_CHAR.find(c))
-		{
-			special_char_check = true;
-		}
 		if (isupper(c))
 		{
 			has_upper = true;
@@ -177,13 +173,8 @@ bool Login::password_strength(string password)
 		}
 	}
 	// determine which criteria pw fails
-	if (!special_char_check || !has_upper || !has_lower || !has_digit)
+	if (!has_upper || !has_lower || !has_digit)
 	{
-		if (!special_char_check)
-		{
-			cout << "Password must contain at least one special character." << endl;
-			return false;
-		}
 		if (!has_upper)
 		{
 			cout << "Password must contain at least one uppercase letter." << endl;
@@ -199,10 +190,10 @@ bool Login::password_strength(string password)
 			cout << "Password must contain at least one number." << endl;
 			return false;
 		}
-		else 
-		{
-			return true;
-		}
+	}
+	else
+	{
+		return true;
 	}
 }
 

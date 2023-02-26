@@ -97,7 +97,7 @@ string Stock::get_stock_from_user(string decision) {
 	string user_string;
 
 	// get user input
-	getline(cin, user_string);
+	getline(cin >> ws, user_string);
 	// string stream to split up user input
 	stringstream s(user_string);
 
